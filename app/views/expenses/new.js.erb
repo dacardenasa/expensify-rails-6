@@ -1,0 +1,12 @@
+function showModalContent() {
+  $("#modal-articles").find(".modal-content").html("<%= j (render 'form') %>");
+  $("#modal-articles").modal();
+}
+
+$(window).on('load', showModalContent());
+
+
+
+
+
+

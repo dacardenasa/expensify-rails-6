@@ -1,0 +1,5 @@
+$('table tbody tr#' + <%= j @id  %>).remove();
+$('.alert-success').html("El producto ha sido eliminado con éxito").show("slow");
+setTimeout(function(){
+  $('.alert-success').hide("slow");
+}, 2000);
