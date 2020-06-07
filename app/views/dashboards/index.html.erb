@@ -3,19 +3,27 @@
   <!-- START EXPENSE'S SUMMARY -->
   <div class="row">
     <div class="total-box col-md-3">
-      $200,000
+      <%= number_to_currency(Expense.where(date: Date.today).sum(:amount))  %>
       <span>HOY</span>
     </div>
     <div class="total-box col-md-3">
-      $140,000
+      <%= number_to_currency(Expense.where( date: Date.today.prev_day).sum(:amount)) %>
       <span>AYER</span>
     </div>
     <div class="total-box col-md-3">
-      $7,500,000
+      <%= number_to_currency(Expense.where("date >= :start_date AND date <= :end_date", 
+                            { 
+                              start_date: Date.current.beginning_of_month, 
+                              end_date: Date.current.end_of_month 
+                            }).sum(:amount)) %>
       <span>ESTE MES</span>
     </div>
     <div class="total-box col-md-3">
-      $6,200,000
+      <%= number_to_currency(Expense.where("date >= :start_date AND date <= :end_date", 
+                            { 
+                              start_date: Date.current.prev_month.beginning_of_month, 
+                              end_date: Date.current.prev_month.end_of_month 
+                            }).sum(:amount)) %>
       <span>MES PASADO</span>
     </div>
   </div>
@@ -29,7 +37,14 @@
       <div class="panel panel-default">
         <div class="panel-heading">Últimos 6 Meses</div>
         <div class="panel-body">
-          <div id="expenses-chart" style="height: 250px;"></div>
+          <div id="expenses-chart" style="height: 300px;">
+            <%= column_chart @column_data, 
+                            stacked: true, 
+                            prefix: "$" , 
+                            thousands: ",", 
+                            colors: ["#2ecc71 ", "#45b39d", "#48c9b0", "#f7dc6f"] 
+                            %>
+          </div>
         </div>
       </div>
     </div>
@@ -40,7 +55,13 @@
       <div class="panel panel-default">
         <div class="panel-heading">Por Día</div>
         <div class="panel-body">
-          <div id="daily-expenses-chart" style="height: 250px;"></div>
+          <div id="daily-expenses-chart" style="height: 300px;">
+            <%= column_chart Expense.group_by_day(:date).
+                              sum(:amount), prefix: "$", 
+                              thousands: ",",
+                              colors: ["#2ecc71 ", "#45b39d"] 
+                              %>
+          </div>
         </div>
       </div>
     </div>
@@ -57,7 +78,17 @@
       <div class="panel panel-default">
         <div class="panel-heading">Por Categoría</div>
         <div class="panel-body">
-          <div id="category-chart" style="height: 250px;"></div>
+          <div id="category-chart" style="height: 300px;">
+            <%= pie_chart Expense.group(:category).
+                          sum(:amount),
+                          prefix: "$" , 
+                          thousands: ",",
+                          colors: 
+                            @category_colors.each do | value |
+                              value
+                            end
+                          %>
+          </div>
         </div>
       </div>
     </div>
@@ -68,12 +99,17 @@
       <div class="panel panel-default">
         <div class="panel-heading">Acumulado</div>
         <div class="panel-body">
-          <div id="month-acc" style="height: 250px;"></div>
+          <div id="month-acc" style="height: 300px;">
+            <%= area_chart Expense.group_by_month(:date).
+                            sum(:amount), prefix: "$" , 
+                            thousands: ",",
+                            colors: ["#2ecc71"] 
+                            %>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <!-- END GRAPHIC'S CONTAINER FOR ACCUMULATED -->
-
 </div>
 <!-- END GRAPHICS CONTAINER -->

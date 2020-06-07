@@ -1,5 +1,13 @@
 $('table tbody tr#' + <%= j @id  %>).remove();
-$('.alert-success').html("El producto ha sido eliminado con éxito").show("slow");
+$('.alerta').html("Expense deleted").show("slow");
+
 setTimeout(function(){
-  $('.alert-success').hide("slow");
+  $('.alerta').hide("slow");
 }, 2000);
+
+$("#total").html("<%= j Expense.all.sum(:amount) %>")
+$("#transactions").html("<%= j Expense.all.count() %>")
+$("#average").html("<%= j Expense.all.sum(:amount) / Expense.all.count() %>")
+
+
+

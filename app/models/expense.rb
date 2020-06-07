@@ -9,7 +9,9 @@
 #  amount     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  exp_type   :string
+#  type       :integer
 #
 class Expense < ApplicationRecord
+  self.inheritance_column = nil
+  enum type: [:Purchase, :Withdrawal, :Transfer, :Payment]
 end

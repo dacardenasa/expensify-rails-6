@@ -1,38 +1,37 @@
 class ExpensesController < ApplicationController
 
   def index
+    @tab = :expenses
     @expenses = Expense.all.order(date: :desc)
-    @types = Hash.new
-    @categories = Hash.new
-
-    @expenses.each do | x |
-
-      if( !@categories.has_key?("#{ x.category }") )
-        @categories["#{ x.category }"] = x.category
-      end
-
-      if( !@types.has_key?("#{ x.exp_type }") )
-        @types["#{ x.exp_type }"] = x.exp_type
-      end
-      
-    end
+    @types = load_filter_expenses( @expenses, "type" )
+    @categories = load_filter_expenses( @expenses, "category")
   end
 
   def new
     @expense = Expense.new
   end
 
+  def create
+    @expense = Expense.create(params_expense)
+  end
+
   def show
     @expense = Expense.find(params[:id])
   end
 
+  def update
+    @expense = Expense.find(params[:id]).update!(params_expense)
+  end
+
   def destroy
-    expense = Expense.find(params[:id]).destroy
+    @id = params[:id].to_i
+    expense = Expense.find(@id)
+    expense.destroy
   end
 
   private
   def params_expense
-    params.require(:expense).permit(:exp_type, :date, :concept, :category, :account)
+    params.require(:expense).permit(:type, :date, :concept, :category, :account)
   end
 
 end

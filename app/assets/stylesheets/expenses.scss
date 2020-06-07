@@ -64,4 +64,6 @@ a.list-group-item { color: #808487; }
   tr:hover .actions a { visibility: visible; }
 }
 
-
+.alert .alert-success {
+  display: none;
+}

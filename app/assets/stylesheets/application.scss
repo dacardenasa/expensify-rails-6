@@ -32,3 +32,11 @@
   max-width: 500px;
   z-index: 1000;
 }
+
+.alerta {
+  display: none;
+  position: fixed;
+  top: 60px;
+  right: 20px;
+}
+

@@ -1,0 +1,16 @@
+<!-- Template js to add created item to the table through render row template -->
+<% if @expense.errors.empty? %>
+  $('table tbody').append(' <%= j render "row", expense: @expense %>');
+  $('.alert').attr('class', 'alert-sucess').html("El producto ha sido creado con éxito").show("slow");
+  setTimeout(function(){
+    $('.alert-success').hide("slow");
+  }, 2000);
+  $('#modal-articles').hide("slow");
+  $('.modal-backdrop').remove();
+<% else %>
+  // show first error
+  $('.alert').attr('class', 'alert-warning').html("<%= @article.errors.full_messages[0] %>").show("slow");
+  setTimeout(function(){
+    $('.alert-success').hide("slow");
+  }, 2000);
+<% end %>

@@ -1,7 +1,9 @@
 <div class="container">
 
   <div class="row">
-    <div class="alert alert-success hide" role="alert"></div>
+    <div class="alert alert-success alerta" role="alert">
+      
+    </div>
     <!-- START FILTER'S ASIDE -->
     <div class="col-md-3">
 
@@ -34,7 +36,7 @@
       <!-- START FILTER'S SUMMARY -->
       <div class="row" style="margin-top: 10px;">
         <div class="summary-box col-md-4 text-center">
-          <div class="summary-value">
+          <div class="summary-value" id="total">
           <% total = 0 %>
           <% @expenses.each do |expense| %>
             <% total += expense.amount %>
@@ -44,11 +46,11 @@
           <div class="summary-label">Total</div>
         </diV>
         <div class="summary-box col-md-4 text-center">
-          <div class="summary-value"><%= @expenses.count %></div>
+          <div class="summary-value" id="transactions"><%= @expenses.count %></div>
           <div class="summary-label">Transactions</div>
         </div>
         <div class="summary-box col-md-4 text-center">
-          <div class="summary-value"><%= number_to_currency( total / @expenses.count ) %></div>
+          <div class="summary-value" id="average"><%= number_to_currency( total / @expenses.count ) %></div>
           <div class="summary-label">Average</div>
         </div>
       </div>
@@ -97,53 +99,9 @@
           </tr>
         </thead>
         <tbody>
-
           <% @expenses.each do |expense| %>
-            <tr id="<%= expense.id %>">
-              <td class="date">
-                <div class="day">
-                  <%= expense.date.day %>
-                </div>
-                <div class="month">
-                  <%= Date::ABBR_MONTHNAMES[expense.date.month] %>
-                </div>
-              </td>
-              <td>
-                <div>
-                  <span class="type">
-                    <%= expense.exp_type %>
-                  </span>
-                </div>
-                <div>
-                  <span class="concept">
-                    <%= expense.concept %>
-                  </span>
-                </div>
-              </td>
-              <td class="category text-right">
-                <%= expense.category %>
-              </td>
-              <td class="text-right" style="width: 170px;">
-                <div class="amount">
-                  <%= number_to_currency(expense.amount) %>
-                </div>
-                <div class="actions">
-
-                  <%= link_to expense_path(expense), remote: true do %>
-                    <%= content_tag( :span, '', class: 'glyphicon glyphicon-edit') %>
-                    Edit
-                  <% end %>
-
-                  <%= link_to expense_path(expense), remote: true, method: :delete, data: { confirm: "Are you sure you want to delete" } do %>
-                    <%= content_tag( :span, '', class: 'glyphicon glyphicon-trash') %>
-                    Delete
-                  <% end %>
-
-                </div>
-              </td>
-            </tr>
+            <%= render "row", expense: expense %>
           <% end %>
-
         </tbody>
       </table>
       <!-- START SHOW DATA FILTER -->
