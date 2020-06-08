@@ -5,9 +5,9 @@ setTimeout(function(){
   $('.alerta').hide("slow");
 }, 2000);
 
-$("#total").html("<%= j Expense.all.sum(:amount) %>")
+$("#total").html("<%= j number_to_currency(Expense.all.sum(:amount)) %>")
 $("#transactions").html("<%= j Expense.all.count() %>")
-$("#average").html("<%= j Expense.all.sum(:amount) / Expense.all.count() %>")
+$("#average").html("<%= j number_to_currency(Expense.all.sum(:amount) / Expense.all.count()) %>")
 
 
 

@@ -1,16 +1,21 @@
 <!-- Template js to add created item to the table through render row template -->
 <% if @expense.errors.empty? %>
-  $('table tbody').append(' <%= j render "row", expense: @expense %>');
-  $('.alert').attr('class', 'alert-sucess').html("El producto ha sido creado con éxito").show("slow");
+  $('table tbody').prepend(' <%= j render "row", expense: @expense %>');
+  $('.alerta').html("Expense created").show("slow");
   setTimeout(function(){
-    $('.alert-success').hide("slow");
+    $('.alerta').hide("slow");
   }, 2000);
   $('#modal-articles').hide("slow");
   $('.modal-backdrop').remove();
+
+  $("#total").html("<%= j number_to_currency(Expense.all.sum(:amount)) %>")
+  $("#transactions").html("<%= j Expense.all.count() %>")
+  $("#average").html("<%= j number_to_currency(Expense.all.sum(:amount) / Expense.all.count()) %>")
+
 <% else %>
   // show first error
-  $('.alert').attr('class', 'alert-warning').html("<%= @article.errors.full_messages[0] %>").show("slow");
+  $('.alerta').html("<%= @article.errors.full_messages[0] %>").show("slow");
   setTimeout(function(){
-    $('.alert-success').hide("slow");
+    $('.alerta').hide("slow");
   }, 2000);
 <% end %>

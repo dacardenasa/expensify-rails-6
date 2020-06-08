@@ -8,7 +8,14 @@ class ExpensesController < ApplicationController
   end
 
   def new
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+
     @expense = Expense.new
+  
   end
 
   def create
@@ -31,7 +38,7 @@ class ExpensesController < ApplicationController
 
   private
   def params_expense
-    params.require(:expense).permit(:type, :date, :concept, :category, :account)
+    params.require(:expense).permit(:type, :date, :concept, :category, :amount)
   end
 
 end

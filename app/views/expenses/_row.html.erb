@@ -27,11 +27,11 @@
       <%= number_to_currency(expense.amount) %>
     </div>
     <div class="actions">
-      <%= link_to expense_path(expense), remote: true do %>
+      <%= link_to expense_path(expense), { remote: true } do %>
         <%= content_tag( :span, '', class: 'glyphicon glyphicon-edit') %>
         Edit
       <% end %>
-      <%= link_to expense_path(expense), remote: true, method: :delete, data: { confirm: "Are you sure you want to delete" } do %>
+      <%= link_to expense_path(expense), { remote: true, method: :delete }, data: { confirm: "Are you sure you want to delete" } do %>
         <%= content_tag( :span, '', class: 'glyphicon glyphicon-trash') %>
         Delete
       <% end %>
