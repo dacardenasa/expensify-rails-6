@@ -1,10 +1,12 @@
 $('table tbody tr#' + <%= j @id  %>).remove();
-$('.alerta').html("Expense deleted").show("slow");
+// Show sucess alert to user
+swal({
+  title: "Expense deleted!",
+  icon: "success",
+  button: "ok",
+});
 
-setTimeout(function(){
-  $('.alerta').hide("slow");
-}, 2000);
-
+// Update summary values
 $("#total").html("<%= j number_to_currency(Expense.all.sum(:amount)) %>")
 $("#transactions").html("<%= j Expense.all.count() %>")
 $("#average").html("<%= j number_to_currency(Expense.all.sum(:amount) / Expense.all.count()) %>")

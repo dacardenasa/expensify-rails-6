@@ -1,37 +1,37 @@
 <tr id="<%= expense.id %>">
   <td class="date">
-    <div class="day">
+    <div class="day" id="day">
       <%= expense.date.day %>
     </div>
-    <div class="month">
+    <div class="month" id="month">
       <%= Date::ABBR_MONTHNAMES[expense.date.month] %>
     </div>
   </td>
   <td>
     <div>
-      <span class="type">
+      <span class="type" id="type">
         <%= expense.type %>
       </span>
     </div>
     <div>
-      <span class="concept">
+      <span class="concept" id="concept">
         <%= expense.concept %>
       </span>
     </div>
   </td>
-  <td class="category text-right">
+  <td class="category text-right" id="category">
     <%= expense.category %>
   </td>
   <td class="text-right" style="width: 170px;">
-    <div class="amount">
+    <div class="amount" id="amount">
       <%= number_to_currency(expense.amount) %>
     </div>
     <div class="actions">
-      <%= link_to expense_path(expense), { remote: true } do %>
+      <%= link_to expense_path(expense), remote: true  do %>
         <%= content_tag( :span, '', class: 'glyphicon glyphicon-edit') %>
         Edit
       <% end %>
-      <%= link_to expense_path(expense), { remote: true, method: :delete }, data: { confirm: "Are you sure you want to delete" } do %>
+      <%= link_to expense_path(expense), remote: true, method: :delete , data: { confirm: "Are you sure you want to delete" } do %>
         <%= content_tag( :span, '', class: 'glyphicon glyphicon-trash') %>
         Delete
       <% end %>

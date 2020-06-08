@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
       load_filter[d.type] = d.type:
       load_filter[d.category] = d.category
     end
-    load_filter
+    load_filter.sort
   end
 
   # Method to generate random colors

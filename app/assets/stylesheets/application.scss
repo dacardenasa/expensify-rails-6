@@ -33,11 +33,17 @@
   z-index: 1000;
 }
 
-.alerta {
-  display: none;
-  position: fixed;
-  top: 60px;
-  right: 20px;
+.row .row-category {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
 }
+
+input[type="date"].form-control, 
+input[type="time"].form-control, 
+input[type="datetime-local"].form-control, 
+input[type="month"].form-control {
+  line-height: 24px;
+}
+
 
 

@@ -1,21 +1,28 @@
 <!-- Template js to add created item to the table through render row template -->
 <% if @expense.errors.empty? %>
+  // Update info expense into table
   $('table tbody').prepend(' <%= j render "row", expense: @expense %>');
-  $('.alerta').html("Expense created").show("slow");
-  setTimeout(function(){
-    $('.alerta').hide("slow");
-  }, 2000);
-  $('#modal-articles').hide("slow");
+  // Show sucess alert to user
+  swal({
+  title: "Expense created!",
+  icon: "success",
+  button: "ok",
+  });
+  // Hide modal
+  $('#modal-articles').modal("hide");
   $('.modal-backdrop').remove();
-
+  
+  // Update summary values
   $("#total").html("<%= j number_to_currency(Expense.all.sum(:amount)) %>")
   $("#transactions").html("<%= j Expense.all.count() %>")
   $("#average").html("<%= j number_to_currency(Expense.all.sum(:amount) / Expense.all.count()) %>")
 
 <% else %>
-  // show first error
-  $('.alerta').html("<%= @article.errors.full_messages[0] %>").show("slow");
-  setTimeout(function(){
-    $('.alerta').hide("slow");
-  }, 2000);
+  // Show error alert to user
+  swal({
+    title: "Something went wrong!",
+    text: "<%= j @expense.errors.full_messages[0] %>",
+    icon: "error",
+    button: "ok",
+  });
 <% end %>

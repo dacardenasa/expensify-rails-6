@@ -15,6 +15,7 @@ class ExpensesController < ApplicationController
     end
 
     @expense = Expense.new
+    @categories = load_filter_expenses( Expense.all, "category")
   
   end
 
@@ -24,10 +25,12 @@ class ExpensesController < ApplicationController
 
   def show
     @expense = Expense.find(params[:id])
+    @categories = load_filter_expenses( Expense.all, "category")
   end
 
   def update
-    @expense = Expense.find(params[:id]).update!(params_expense)
+    @expense = Expense.find(params[:id])
+    @expense.update(params_expense)
   end
 
   def destroy

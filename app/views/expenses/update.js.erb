@@ -1,0 +1,39 @@
+<!-- Template js to add created item to the table through render row template -->
+<% if @expense.errors.empty? %>
+
+  // add the new rows to the table, show alert and hide modal
+  fila = $('table tbody tr#' + <%= j @expense.id %>);
+
+  // Update row data
+  $(fila.find('#type')).html('<%= j @expense.type %>')
+  $(fila.find('#concept')).html('<%= j @expense.concept %>')
+  $(fila.find('#category')).html('<%= j @expense.category %>')
+  $(fila.find('#amount')).html('<%= j number_to_currency(@expense.amount) %>')
+  $(fila.find('#day')).html('<%= j @expense.date.day %>')
+  $(fila.find('#month')).html('<%= j Date::ABBR_MONTHNAMES[@expense.date.month] %>')
+
+  // Show sucess alert to user
+  swal({
+  title: "Expense updated!",
+  icon: "success",
+  button: "ok",
+  });
+
+  // Hide modal
+  $('#modal-articles').modal("hide");
+  $('.modal-backdrop').remove();
+  
+  // Update summary values
+  $("#total").html("<%= j number_to_currency(Expense.all.sum(:amount)) %>")
+  $("#transactions").html("<%= j Expense.all.count() %>")
+  $("#average").html("<%= j number_to_currency(Expense.all.sum(:amount) / Expense.all.count()) %>")
+
+<% else %>
+  // Show error alert to user
+  swal({
+    title: "Something went wrong!",
+    text: "<%= j @expense.errors.full_messages[0] %>",
+    icon: "error",
+    button: "ok",
+  });
+<% end %>
