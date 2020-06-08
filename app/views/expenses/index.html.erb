@@ -8,7 +8,7 @@
       <h4 class="filter-header">Transaction Type <span>Choose to filter</span></h4>
       <div class="list-group filter-type">
         <% @types.each do | key, value | %>
-          <a href="#" class="list-group-item"><%= value %></a>
+          <%= link_to "#{value}", filter_path(value), remote: true, method: :post, class: "list-group-item" %>
         <% end %>
         <!-- MORE TRANSACTION TYPES -->
       </div>
@@ -18,7 +18,7 @@
       <h4 class="filter-header">Categoría <span>Selecciona para filtrar</span></h4>
       <div class="list-group filter-type">
         <% @categories.each do | key, value | %>
-          <a href="#" class="list-group-item"><%= value %></a>
+          <%= link_to "#{value}", filter_path(value), remote: true, method: :post,  class: "list-group-item" %>
         <% end %>
         <!-- MORE CATEGORIES  -->
       </div>

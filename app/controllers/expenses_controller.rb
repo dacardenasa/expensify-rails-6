@@ -8,15 +8,12 @@ class ExpensesController < ApplicationController
   end
 
   def new
-
     respond_to do |format|
       format.html
       format.js
     end
-
     @expense = Expense.new
     @categories = load_filter_expenses( Expense.all, "category")
-  
   end
 
   def create
@@ -37,6 +34,21 @@ class ExpensesController < ApplicationController
     @id = params[:id].to_i
     expense = Expense.find(@id)
     expense.destroy
+  end
+
+  def filter
+    @filter = params[:value]
+    if Expense.types.keys.include?(@filter)
+      Expense.types.keys.each_with_index do |key, indice|
+        if key == @filter
+          @type_index = indice
+        end
+      end
+      @expenses = Expense.where("type == :filter", { filter: @type_index }).order(date: :desc)
+    else
+      @expenses = Expense.where("category == :filter", { filter: @filter }).order(date: :desc)
+    end
+
   end
 
   private

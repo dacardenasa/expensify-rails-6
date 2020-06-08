@@ -1,0 +1,25 @@
+$("table tbody").children().remove();
+<% @expenses.each do |expense| %>
+  $('table tbody').prepend(' <%= j render "row", expense: expense %>');
+<% end %>
+
+// Show sucess alert to user
+swal({
+title: "Filter <%= j @filter %> loaded!",
+icon: "success",
+button: "ok",
+});
+
+<% if defined?(@type_index) %>
+  $("#total").html("<%= j number_to_currency(Expense.where("type == :filter", { filter: @type_index }).sum(:amount)) %>")
+  $("#transactions").html("<%= j Expense.where("type == :filter", { filter: @type_index }).count %>")
+  $("#average").html("<%= j number_to_currency(Expense.where("type == :filter", { filter: @type_index }).sum(:amount) / Expense.where("type == :filter", { filter: @type_index }).count) %>")
+<% else %>
+  $("#total").html("<%= j number_to_currency(Expense.where("category == :filter", { filter: @filter }).sum(:amount)) %>")
+  $("#transactions").html("<%= j Expense.where("category == :filter", { filter: @filter }).count %>")
+  $("#average").html("<%= j number_to_currency(Expense.where("category == :filter", { filter: @filter }).sum(:amount) / Expense.where("category == :filter", { filter: @filter }).count) %>")
+<% end %>
+      
+
+
+

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
     load_filter = Hash.new
     data.each do | d |
       filter == "type" ? 
-      load_filter[d.type] = d.type:
+      load_filter[d.type] = d.type :
       load_filter[d.category] = d.category
     end
     load_filter.sort
