@@ -56,11 +56,12 @@
         <div class="panel-heading">Por Día</div>
         <div class="panel-body">
           <div id="daily-expenses-chart" style="height: 300px;">
-            <%= column_chart Expense.group_by_day(:date).
-                              sum(:amount), prefix: "$", 
-                              thousands: ",",
-                              colors: ["#2ecc71 ", "#45b39d"] 
-                              %>
+            <%= column_chart @day_data,
+                             stacked: true, 
+                             prefix: "$", 
+                             thousands: ",",
+                             colors: ["#2ecc71 ", "#45b39d", "#48c9b0", "#f7dc6f"] 
+                             %>
           </div>
         </div>
       </div>
@@ -79,9 +80,8 @@
         <div class="panel-heading">Por Categoría</div>
         <div class="panel-body">
           <div id="category-chart" style="height: 300px;">
-            <%= pie_chart Expense.group(:category).
-                          sum(:amount),
-                          prefix: "$" , 
+            <%= pie_chart @category_data,
+                          prefix: "$", 
                           thousands: ",",
                           colors: 
                             @category_colors.each do | value |
