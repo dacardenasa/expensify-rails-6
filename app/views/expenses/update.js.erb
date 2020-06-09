@@ -15,6 +15,7 @@
   // Show sucess alert to user
   swal({
   title: "Expense updated!",
+  text: "The <%= j "#{ @expense.type } #{ @expense.concept } for #{ number_to_currency(@expense.amount) } on #{ @expense.date } was updates successfully!" %> ",
   icon: "success",
   button: "ok",
   });

@@ -8,7 +8,7 @@
       <h4 class="filter-header">Transaction Type <span>Choose to filter</span></h4>
       <div class="list-group filter-type">
         <% @types.each do | key, value | %>
-          <%= link_to "#{value}", filter_path(value), remote: true, method: :post, class: "list-group-item" %>
+          <%= link_to "#{value}", filter_path(value), remote: true, method: :post, class: "list-group-item", id: value %>
         <% end %>
         <!-- MORE TRANSACTION TYPES -->
       </div>
@@ -18,7 +18,7 @@
       <h4 class="filter-header">Categoría <span>Selecciona para filtrar</span></h4>
       <div class="list-group filter-type">
         <% @categories.each do | key, value | %>
-          <%= link_to "#{value}", filter_path(value), remote: true, method: :post,  class: "list-group-item" %>
+          <%= link_to "#{value}", filter_path(value), remote: true, method: :post,  class: "list-group-item", id: value %>
         <% end %>
         <!-- MORE CATEGORIES  -->
       </div>
@@ -68,7 +68,7 @@
 
           <!-- END MODAL -->
           <h4 class="dropdown pull-right">
-            <button type="button" class="dropdown-toggle btn btn-link" data-toggle="dropdown">Last six months<span class="caret"></span></button>
+            <button type="button" class="dropdown-toggle btn btn-link" data-toggle="dropdown">June 2020<span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu">
               <li role="presentation"><a href="#">January 2020</a></li>
               <li role="presentation"><a href="#">February 2020</a></li>
@@ -76,6 +76,12 @@
               <li role="presentation"><a href="#">April 2020</a></li>
               <li role="presentation"><a href="#">May 2020</a></li>
               <li role="presentation"><a href="#">June 2020</a></li>
+              <li role="presentation"><a href="#">July 2020</a></li>
+              <li role="presentation"><a href="#">August 2020</a></li>
+              <li role="presentation"><a href="#">September 2020</a></li>
+              <li role="presentation"><a href="#">October 2020</a></li>
+              <li role="presentation"><a href="#">November 2020</a></li>
+              <li role="presentation"><a href="#">December 2020</a></li>
               <!-- MORE MONTHS -->
             </ul>
           </h4>

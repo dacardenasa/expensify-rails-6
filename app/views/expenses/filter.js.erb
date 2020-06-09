@@ -1,3 +1,5 @@
+$(".filter-type").children().removeClass("active");
+$(".filter-type #<%= j @filter%>").addClass("active");
 $("table tbody").children().remove();
 <% @expenses.each do |expense| %>
   $('table tbody').prepend(' <%= j render "row", expense: expense %>');

@@ -4,11 +4,11 @@
   <div class="row">
     <div class="total-box col-md-3">
       <%= number_to_currency(Expense.where(date: Date.today).sum(:amount))  %>
-      <span>HOY</span>
+      <span>TODAY</span>
     </div>
     <div class="total-box col-md-3">
       <%= number_to_currency(Expense.where( date: Date.today.prev_day).sum(:amount)) %>
-      <span>AYER</span>
+      <span>YESTERDAY</span>
     </div>
     <div class="total-box col-md-3">
       <%= number_to_currency(Expense.where("date >= :start_date AND date <= :end_date", 
@@ -16,7 +16,7 @@
                               start_date: Date.current.beginning_of_month, 
                               end_date: Date.current.end_of_month 
                             }).sum(:amount)) %>
-      <span>ESTE MES</span>
+      <span>THIS MONTH</span>
     </div>
     <div class="total-box col-md-3">
       <%= number_to_currency(Expense.where("date >= :start_date AND date <= :end_date", 
@@ -24,7 +24,7 @@
                               start_date: Date.current.prev_month.beginning_of_month, 
                               end_date: Date.current.prev_month.end_of_month 
                             }).sum(:amount)) %>
-      <span>MES PASADO</span>
+      <span>LAST MONTH</span>
     </div>
   </div>
   <!-- END EXPENSE'S SUMMARY -->
@@ -35,7 +35,7 @@
     <!-- START GRAPHIC'S CONTAINER OF LAST SIX MONTHS -->
     <div class="box col-md-6">
       <div class="panel panel-default">
-        <div class="panel-heading">Últimos 6 Meses</div>
+        <div class="panel-heading">Last 6 months</div>
         <div class="panel-body">
           <div id="expenses-chart" style="height: 300px;">
             <%= column_chart @column_data, 
@@ -53,7 +53,7 @@
     <!-- START GRAPHIC'S CONTAINER FOR DAY -->
     <div class="box col-md-6">
       <div class="panel panel-default">
-        <div class="panel-heading">Por Día</div>
+        <div class="panel-heading">By day</div>
         <div class="panel-body">
           <div id="daily-expenses-chart" style="height: 300px;">
             <%= column_chart @day_data,
@@ -77,7 +77,7 @@
     <!-- START GRAPHIC'S CONTAINER FOR CATEGORIE -->
     <div class="box col-md-6">
       <div class="panel panel-default">
-        <div class="panel-heading">Por Categoría</div>
+        <div class="panel-heading">By category</div>
         <div class="panel-body">
           <div id="category-chart" style="height: 300px;">
             <%= pie_chart @category_data,
@@ -97,14 +97,14 @@
     <!-- START GRAPHIC'S CONTAINER FOR ACCUMULATED -->
     <div class=" box col-md-6">
       <div class="panel panel-default">
-        <div class="panel-heading">Acumulado</div>
+        <div class="panel-heading">Accumulated</div>
         <div class="panel-body">
           <div id="month-acc" style="height: 300px;">
-            <%= area_chart Expense.group_by_month(:date).
-                            sum(:amount), prefix: "$" , 
-                            thousands: ",",
-                            colors: ["#2ecc71"] 
-                            %>
+            <%= bar_chart @acumulated_data, 
+                          prefix: "$" , 
+                          thousands: ",",
+                          colors: ["#f7dc6f"] 
+                          %>
           </div>
         </div>
       </div>

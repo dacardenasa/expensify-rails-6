@@ -31,9 +31,8 @@ class ExpensesController < ApplicationController
   end
 
   def destroy
-    @id = params[:id].to_i
-    expense = Expense.find(@id)
-    expense.destroy
+    @expense = Expense.find(params[:id])
+    Expense.find(params[:id]).destroy
   end
 
   def filter

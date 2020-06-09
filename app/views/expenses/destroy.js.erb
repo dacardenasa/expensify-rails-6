@@ -1,7 +1,8 @@
-$('table tbody tr#' + <%= j @id  %>).remove();
+$('table tbody tr#' + <%= j @expense.id  %>).remove();
 // Show sucess alert to user
 swal({
   title: "Expense deleted!",
+  text: "The <%= j "#{ @expense.type } #{ @expense.concept } for #{ number_to_currency(@expense.amount) } on #{ @expense.date } was deleted successfully!" %> ",
   icon: "success",
   button: "ok",
 });
