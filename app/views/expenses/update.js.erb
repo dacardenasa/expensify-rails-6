@@ -2,15 +2,37 @@
 <% if @expense.errors.empty? %>
 
   // add the new rows to the table, show alert and hide modal
-  fila = $('table tbody tr#' + <%= j @expense.id %>);
+  current_month = $(".dropdown button").attr("name");
+  if( current_month == "<%= j Date::MONTHNAMES[@expense.date.month] %>" ) {
+    fila = $('table tbody tr#' + <%= j @expense.id %>);
+    // Update row data
+    $(fila.find('#type')).html('<%= j @expense.type %>');
+    $(fila.find('#concept')).html('<%= j @expense.concept %>');
+    $(fila.find('#category')).html('<%= j @expense.category %>');
+    $(fila.find('#amount')).html('<%= j number_to_currency(@expense.amount) %>');
+    $(fila.find('#day')).html('<%= j @expense.date.day %>');
+    $(fila.find('#month')).html('<%= j Date::ABBR_MONTHNAMES[@expense.date.month] %>');
 
-  // Update row data
-  $(fila.find('#type')).html('<%= j @expense.type %>')
-  $(fila.find('#concept')).html('<%= j @expense.concept %>')
-  $(fila.find('#category')).html('<%= j @expense.category %>')
-  $(fila.find('#amount')).html('<%= j number_to_currency(@expense.amount) %>')
-  $(fila.find('#day')).html('<%= j @expense.date.day %>')
-  $(fila.find('#month')).html('<%= j Date::ABBR_MONTHNAMES[@expense.date.month] %>')
+    var expenseNew = <%= j @expense.amount %>
+    var expenseOld = <%= j @prev_expense.amount %>
+
+    <% if ( @expense.amount != @prev_expense.amount) %>
+      // Update summary
+      var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      });
+
+      var totalAmount = Number($("#total").text().replace("$", "").replace(",", ""));
+      var total = ( (totalAmount - expenseOld) + expenseNew );
+      var average = total / Number($("#transactions").text());
+
+      $("#total").html( `${formatter.format(total)}` );
+      $("#average").html( `${formatter.format(average)}` );
+
+    <% end %>
+
+  }
 
   // Show sucess alert to user
   swal({
@@ -23,11 +45,6 @@
   // Hide modal
   $('#modal-articles').modal("hide");
   $('.modal-backdrop').remove();
-  
-  // Update summary values
-  $("#total").html("<%= j number_to_currency(Expense.all.sum(:amount)) %>")
-  $("#transactions").html("<%= j Expense.all.count() %>")
-  $("#average").html("<%= j number_to_currency(Expense.all.sum(:amount) / Expense.all.count()) %>")
 
 <% else %>
   // Show error alert to user

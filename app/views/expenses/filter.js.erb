@@ -1,27 +1,46 @@
-$(".filter-type").children().removeClass("active");
-$(".filter-type #<%= j @filter%>").addClass("active");
-$("table tbody").children().remove();
-<% @expenses.each do |expense| %>
-  $('table tbody').prepend(' <%= j render "row", expense: expense %>');
-<% end %>
+<% if @expenses.count > 0 %>
 
-// Show sucess alert to user
-swal({
-title: "Filter <%= j @filter %> loaded!",
-icon: "success",
-button: "ok",
-});
+  $(".filter-type").children().removeClass("active");
+  $("table tbody").children().remove();
 
-<% if defined?(@type_index) %>
-  $("#total").html("<%= j number_to_currency(Expense.where("type == :filter", { filter: @type_index }).sum(:amount)) %>")
-  $("#transactions").html("<%= j Expense.where("type == :filter", { filter: @type_index }).count %>")
-  $("#average").html("<%= j number_to_currency(Expense.where("type == :filter", { filter: @type_index }).sum(:amount) / Expense.where("type == :filter", { filter: @type_index }).count) %>")
+  <% @expenses.each do |expense| %>
+    $('table tbody').append(' <%= j render "row", expense: expense %>');
+  <% end %>
+
+  // Show sucess alert to user
+  swal({
+  title: "Success Data",
+  text: "<%= j @expenses.count %> Records found for the filter of <%= j @filter %>!",
+  icon: "success",
+  button: "ok",
+  });
+
+  <% if defined?(@type_index) %>
+    $(".filter-type #<%= j @filter%>").addClass("active");
+    $("#total").html("<%= j number_to_currency(@expenses.sum(:amount)) %>");
+    $("#transactions").html("<%= j @expenses.count %>");
+    $("#average").html("<%= j number_to_currency(@expenses.sum(:amount) / @expenses.count) %>");
+  <% elsif defined?(@month) %>
+    $(".dropdown button#active").attr("name", "<%= j @filter %>");
+    $(".dropdown #active").html("<%= j @month %>" + " <%= j Date.current.year %> <span class='caret'></span>");
+    $("#total").html("<%= j number_to_currency(@expenses.sum(:amount)) %>");
+    $("#transactions").html("<%= j @expenses.count %>");
+    $("#average").html("<%= j number_to_currency(@expenses.sum(:amount) / @expenses.count) %>");
+  <% else %>
+    $(".filter-type #<%= j @filter%>").addClass("active");
+    $("#total").html("<%= j number_to_currency(@expenses.sum(:amount)) %>")
+    $("#transactions").html("<%= j @expenses.count %>");
+    $("#average").html("<%= j number_to_currency(@expenses.sum(:amount) / @expenses.count) %>");
+  <% end %>
+
 <% else %>
-  $("#total").html("<%= j number_to_currency(Expense.where("category == :filter", { filter: @filter }).sum(:amount)) %>")
-  $("#transactions").html("<%= j Expense.where("category == :filter", { filter: @filter }).count %>")
-  $("#average").html("<%= j number_to_currency(Expense.where("category == :filter", { filter: @filter }).sum(:amount) / Expense.where("category == :filter", { filter: @filter }).count) %>")
+
+  swal({
+  title: "Something went wrong!",
+  text: "No records for <%= j @filter %> filter!",
+  icon: "warning",
+  button: "ok",
+  });
+
 <% end %>
-      
-
-
 

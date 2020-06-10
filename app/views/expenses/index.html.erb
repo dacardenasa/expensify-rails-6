@@ -3,7 +3,6 @@
   <div class="row">
     <!-- START FILTER'S ASIDE -->
     <div class="col-md-3">
-
       <!-- START PURCHASE & WITHDRAWAL FILTER-->
       <h4 class="filter-header">Transaction Type <span>Choose to filter</span></h4>
       <div class="list-group filter-type">
@@ -15,7 +14,7 @@
       <!-- END PURCHASE & WITHDRAWAL FILTER-->
 
       <!-- START CATEGORIES FILTER-->
-      <h4 class="filter-header">Categoría <span>Selecciona para filtrar</span></h4>
+      <h4 class="filter-header">Categories <span>Choose to filter</span></h4>
       <div class="list-group filter-type">
         <% @categories.each do | key, value | %>
           <%= link_to "#{value}", filter_path(value), remote: true, method: :post,  class: "list-group-item", id: value %>
@@ -34,7 +33,7 @@
       <div class="row" style="margin-top: 10px;">
         <div class="summary-box col-md-4 text-center">
           <div class="summary-value" id="total">
-          <%= number_to_currency(Expense.all.sum(:amount)) %>
+          <%= number_to_currency(@expenses.all.sum(:amount)) %>
           </div>
           <div class="summary-label">Total</div>
         </diV>
@@ -43,7 +42,7 @@
           <div class="summary-label">Transactions</div>
         </div>
         <div class="summary-box col-md-4 text-center">
-          <div class="summary-value" id="average"><%= number_to_currency( Expense.all.sum(:amount) / Expense.all.count ) %></div>
+          <div class="summary-value" id="average"><%= number_to_currency( @expenses.sum(:amount) / @expenses.count ) %></div>
           <div class="summary-label">Average</div>
         </div>
       </div>
@@ -68,21 +67,15 @@
 
           <!-- END MODAL -->
           <h4 class="dropdown pull-right">
-            <button type="button" class="dropdown-toggle btn btn-link" data-toggle="dropdown">June 2020<span class="caret"></span></button>
+            <button type="button" class="dropdown-toggle btn btn-link" data-toggle="dropdown" name="<%= Date::MONTHNAMES[Date.current.month] %>" id="active"><%= Date::ABBR_MONTHNAMES[Date.current.month] %> <%= Date.current.year %><span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu">
-              <li role="presentation"><a href="#">January 2020</a></li>
-              <li role="presentation"><a href="#">February 2020</a></li>
-              <li role="presentation"><a href="#">March 2020</a></li>
-              <li role="presentation"><a href="#">April 2020</a></li>
-              <li role="presentation"><a href="#">May 2020</a></li>
-              <li role="presentation"><a href="#">June 2020</a></li>
-              <li role="presentation"><a href="#">July 2020</a></li>
-              <li role="presentation"><a href="#">August 2020</a></li>
-              <li role="presentation"><a href="#">September 2020</a></li>
-              <li role="presentation"><a href="#">October 2020</a></li>
-              <li role="presentation"><a href="#">November 2020</a></li>
-              <li role="presentation"><a href="#">December 2020</a></li>
-              <!-- MORE MONTHS -->
+              <% ( (Date.today - 365).beginning_of_month..(Date.today).beginning_of_month ).each do | time | %>
+                <% if time.day == 1 %>
+                <li role="presentation">
+                  <%= link_to "#{ Date::MONTHNAMES[time.month] } #{ time.year }", filter_path(Date::MONTHNAMES[time.month]), remote: true, method: :post, id: Date::MONTHNAMES[time.month] %>
+                </li>
+                <% end %>
+              <% end %>
             </ul>
           </h4>
         </div>
@@ -93,10 +86,10 @@
       <table id="expenses-table" class="table table-hover" style="margin-top: 20px;">
         <thead>
           <tr>
-            <th class="text-center">Día</th>
-            <th>Concepto</th>
-            <th class="text-right">Categoría</th>
-            <th class="text-right">Valor</th>
+            <th class="text-center">Day</th>
+            <th>Concept</th>
+            <th class="text-right">Category</th>
+            <th class="text-right">Value</th>
           </tr>
         </thead>
         <tbody>

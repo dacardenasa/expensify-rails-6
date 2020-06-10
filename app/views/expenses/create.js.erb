@@ -1,7 +1,37 @@
 <!-- Template js to add created item to the table through render row template -->
 <% if @expense.errors.empty? %>
   // Update info expense into table
-  $('table tbody').prepend(' <%= j render "row", expense: @expense %>');
+  var current_month = $(".dropdown button").attr("name");
+  var filter = false;
+
+  $( ".filter-type a" ).each(function( index ) {
+    if ( $( this ).hasClass("active") ) {
+      filter = true;
+      return false;
+    }
+  });
+
+  if( current_month == "<%= j Date::MONTHNAMES[@expense.date.month] %>" && !filter ) {
+    $('table tbody').prepend(' <%= j render "row", expense: @expense %>');
+
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+
+    var expenseAmount = <%= j @expense.amount %>
+    var totalAmount = Number($("#total").text().replace("$", "").replace(",", ""));
+
+    var total = totalAmount + expenseAmount; 
+    var transactions = Number($("#transactions").text()) + 1;
+    var average = total / transactions;
+
+    $("#total").html( `${formatter.format(total)}` );
+    $("#transactions").html(`${ transactions }`);
+    $("#average").html( `${formatter.format(average)}` );
+
+  }
+
   // Show sucess alert to user
   swal({
   title: "Expense created!",
@@ -9,14 +39,10 @@
   icon: "success",
   button: "ok",
   });
+
   // Hide modal
   $('#modal-articles').modal("hide");
   $('.modal-backdrop').remove();
-  
-  // Update summary values
-  $("#total").html("<%= j number_to_currency(Expense.all.sum(:amount)) %>")
-  $("#transactions").html("<%= j Expense.all.count() %>")
-  $("#average").html("<%= j number_to_currency(Expense.all.sum(:amount) / Expense.all.count()) %>")
 
 <% else %>
   // Show error alert to user
