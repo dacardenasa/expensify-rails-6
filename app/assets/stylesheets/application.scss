@@ -24,15 +24,6 @@
   margin-bottom: 40px;
 }
 
-// add this class to alerts to fix their position
-.alert-growl {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  max-width: 500px;
-  z-index: 1000;
-}
-
 .row .row-category {
   margin-right: 0px !important;
   margin-left: 0px !important;
@@ -48,6 +39,5 @@ input[type="month"].form-control {
 table tbody .t-row {
   transition: all 300ms;
 }
-
 
 
