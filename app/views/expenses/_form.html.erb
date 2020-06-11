@@ -16,8 +16,9 @@
                                                   [
                                                     ["#{ type }", "#{ type }"]
                                                   ]
-                                                }, @expense.type), 
-                                                class: "form-control") %>
+                                                }, @expense.type),
+                                                {}, 
+                                                { class: "form-control" }) %>
       </div>
       <div class="form-group col-md-8">
         <%= f.label :date %>
@@ -38,7 +39,8 @@
                                                       ["#{category}", "#{category}"], 
                                                     ]
                                                     }, @expense.category),
-                                                    class: "form-control") %>
+                                                    {}, 
+                                                    { class: "form-control" }) %>
       </div>
       <div class="form-group col-md-8">
         <%= f.label :amount %>

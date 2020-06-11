@@ -10,14 +10,7 @@ class ExpensesController < ApplicationController
     @categories = load_filter_expenses( Expense.all, "category")
   end
 
-  puts ( Date.today - 365 ).beginning_of_month
-  puts ( Date.today ).beginning_of_month
-
   def new
-    respond_to do |format|
-      format.html
-      format.js
-    end
     @expense = Expense.new
     @categories = load_filter_expenses( Expense.all, "category")
     @types = load_filter_expenses( Expense.all, "type")
