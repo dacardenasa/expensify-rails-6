@@ -1,6 +1,6 @@
 class Api::V1::ExpensesController < ApplicationController
   skip_before_action :verify_authenticity_token
-  
+
   def index
     expenses = Expense.all
     render json: expenses, status: 200
@@ -31,8 +31,8 @@ class Api::V1::ExpensesController < ApplicationController
   end
 
   private
+
   def params_expense
     params.permit(:type, :date, :concept, :category, :amount)
   end
-
 end

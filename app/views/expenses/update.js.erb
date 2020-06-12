@@ -1,57 +1,37 @@
 <!-- Template js to add created item to the table through render row template -->
 <% if @expense.errors.empty? %>
 
-  // add the new rows to the table, show alert and hide modal
-  current_month = $(".dropdown button").attr("name");
-  if( current_month == "<%= j Date::MONTHNAMES[@expense.date.month] %>" ) {
-    fila = $('table tbody tr#' + <%= j @expense.id %>);
-    // Update row data
-    $(fila.find('#type')).html('<%= j @expense.type %>');
-    $(fila.find('#concept')).html('<%= j @expense.concept %>');
-    $(fila.find('#category')).html('<%= j @expense.category %>');
-    $(fila.find('#amount')).html('<%= j number_to_currency(@expense.amount) %>');
-    $(fila.find('#day')).html('<%= j @expense.date.day %>');
-    $(fila.find('#month')).html('<%= j Date::ABBR_MONTHNAMES[@expense.date.month] %>');
+  fila = $('table tbody tr#' + <%= j @expense.id %>);
+  // Update row data
+  $(fila.find('#type')).html('<%= j @expense.type %>');
+  $(fila.find('#concept')).html('<%= j @expense.concept %>');
+  $(fila.find('#category')).html('<%= j @expense.category %>');
+  $(fila.find('#amount')).html('<%= j number_to_currency(@expense.amount) %>');
+  $(fila.find('#day')).html('<%= j @expense.date.day %>');
+  $(fila.find('#month')).html('<%= j Date::ABBR_MONTHNAMES[@expense.date.month] %>');
 
-    var expenseNew = <%= j @expense.amount %>
+  <% if ( @expense.amount != @prev_expense.amount) %>
+    // Update summary
     var expenseOld = <%= j @prev_expense.amount %>
+    var expenseNew = <%= j @expense.amount %>
 
-    <% if ( @expense.amount != @prev_expense.amount) %>
-      // Update summary
-      var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      });
+    // Update summary expenses
+    var currentTotal = Number( $("#total").text().replace("$", "").replace(",", "") );
+    var updateTotal = ( ( currentTotal - expenseOld ) + expenseNew );
+    var updateAverage = ( updateTotal / Number( $("#transactions").text() ) );
 
-      var totalAmount = Number($("#total").text().replace("$", "").replace(",", ""));
-      var total = ( (totalAmount - expenseOld) + expenseNew );
-      var average = total / Number($("#transactions").text());
-
-      $("#total").html( `${formatter.format(total)}` );
-      $("#average").html( `${formatter.format(average)}` );
-
-    <% end %>
-
-  }
-
-  // Show sucess alert to user
-  swal({
-  title: "Expense updated!",
-  text: "The <%= j "#{ @expense.type } #{ @expense.concept } for #{ number_to_currency(@expense.amount) } on #{ @expense.date } was updates successfully!" %> ",
-  icon: "success",
-  button: "ok",
-  });
-
+    $("#total").html( `${ numberToCurrency(updateTotal) }` );
+    $("#average").html( `${ numberToCurrency(updateAverage) }` );
+  <% end %>
+  
   // Hide modal
   $('#modal-articles').modal("hide");
   $('.modal-backdrop').remove();
 
+  var text = "The <%= j "#{ @expense.type } #{ @expense.concept } for #{number_to_currency(@expense.amount)}   on #{ @expense.date } was updated successfully!" %>";
+  showSwalAlert("Expense updated!", text, "success");
+
 <% else %>
-  // Show error alert to user
-  swal({
-    title: "Something went wrong!",
-    text: "<%= j @expense.errors.full_messages[0] %>",
-    icon: "error",
-    button: "ok",
-  });
+  var text = "<%= j @expense.errors.full_messages[0] %>";
+  showSwalAlert("Something went wrong!", text, "error");
 <% end %>

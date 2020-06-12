@@ -1,17 +1,8 @@
 $('table tbody tr#' + <%= j @expense.id  %>).remove();
 
 // Show sucess alert to user
-swal({
-  title: "Expense deleted!",
-  text: "The <%= j "#{ @expense.type } #{ @expense.concept } for #{ number_to_currency(@expense.amount) } on #{ @expense.date } was deleted successfully!" %> ",
-  icon: "success",
-  button: "ok",
-});
-
-var formatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-});
+var text = "The <%= j "#{ @expense.type } #{ @expense.concept } for #{ number_to_currency(@expense.amount) } on #{ @expense.date } was deleted successfully!" %>";
+showSwalAlert("Expense deleted!", text, "success");
 
 var expenseAmount = <%= j @expense.amount %>
 var totalAmount = Number($("#total").text().replace("$", "").replace(",", ""));
@@ -20,9 +11,9 @@ var total = totalAmount - expenseAmount;
 var transactions = Number($("#transactions").text()) - 1;
 var average = total / transactions;
 
-$("#total").html( `${formatter.format(total)}` );
+$("#total").html( `${numberToCurrency(total)}` );
 $("#transactions").html(`${ transactions }`);
-$("#average").html( `${formatter.format(average)}` );
+$("#average").html( `${numberToCurrency(average)}` );
 
 
 

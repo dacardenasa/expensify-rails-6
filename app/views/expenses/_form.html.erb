@@ -5,10 +5,8 @@
   </button>
   <h5 class="modal-title" id="exampleModalLabel">Expense</h5>
 </div>
-
 <%= form_for @expense, remote: true do |f| %>
   <div class="modal-body">
-    
     <div class="row">
       <div class="form-group col-md-4">
         <%= f.label :type %></br>
@@ -22,15 +20,13 @@
       </div>
       <div class="form-group col-md-8">
         <%= f.label :date %>
-        <%= f.date_field :date , class: "form-control", id: :date %>
+        <%= f.date_field :date , class: "form-control", max: Date.new(2099, 12, 31), id: :date %>
       </>
     </div>
-
     <div class="form-group col-md-12">
       <%= f.label :concept %>
-      <%= f.text_field :concept, class: "form-control", id: :concept %>
+      <%= f.text_field :concept, class: "form-control", minlength: 3, id: :concept %>
     </div>
-
     <div class="row row-category">
       <div class="form-group col-md-4">
         <%= f.label :category %>
@@ -44,14 +40,12 @@
       </div>
       <div class="form-group col-md-8">
         <%= f.label :amount %>
-        <%= f.number_field :amount, class: "form-control", id: :amount %>
+        <%= f.number_field :amount, class: "form-control", min: 1, placeholder: 0, id: :amount %>
       </div>
     </div>
-
   </div>
-
-<div class="modal-footer">
-  <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-  <%= f.submit form_title, class: "btn btn-info" %>
-</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+    <%= f.submit form_title, class: "btn btn-info" %>
+  </div>
 <% end %>

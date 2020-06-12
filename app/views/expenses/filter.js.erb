@@ -6,41 +6,23 @@
   <% @expenses.each do |expense| %>
     $('table tbody').append(' <%= j render "row", expense: expense %>');
   <% end %>
-
-  // Show sucess alert to user
-  swal({
-  title: "Success Data",
-  text: "<%= j @expenses.count %> Records found for the filter of <%= j @filter %>!",
-  icon: "success",
-  button: "ok",
-  });
-
-  <% if defined?(@type_index) %>
+    
+  <% if Expense.types.keys.include?(@filter) %>
     $(".filter-type #<%= j @filter%>").addClass("active");
-    $("#total").html("<%= j number_to_currency(@expenses.sum(:amount)) %>");
-    $("#transactions").html("<%= j @expenses.count %>");
-    $("#average").html("<%= j number_to_currency(@expenses.sum(:amount) / @expenses.count) %>");
-  <% elsif defined?(@month) %>
-    $(".dropdown button#active").attr("name", "<%= j @filter %>");
-    $(".dropdown #active").html("<%= j @month %>" + " <%= j Date.current.year %> <span class='caret'></span>");
-    $("#total").html("<%= j number_to_currency(@expenses.sum(:amount)) %>");
-    $("#transactions").html("<%= j @expenses.count %>");
-    $("#average").html("<%= j number_to_currency(@expenses.sum(:amount) / @expenses.count) %>");
+  <% elsif @filter.is_a?(Date) %>
+    $(".dropdown button#active").html("<%= j Date::MONTHNAMES[@filter.month] %>" + " <%= j @filter.year %> <span class='caret'></span>");
   <% else %>
-    $(".filter-type #<%= j @filter%>").addClass("active");
-    $("#total").html("<%= j number_to_currency(@expenses.sum(:amount)) %>")
-    $("#transactions").html("<%= j @expenses.count %>");
-    $("#average").html("<%= j number_to_currency(@expenses.sum(:amount) / @expenses.count) %>");
+    $(".filter-type #<%= j @filter %>").addClass("active");
   <% end %>
 
+  $("#total").html("<%= j number_to_currency(@expenses.sum(:amount)) %>");
+  $("#transactions").html("<%= j @expenses.count %>");
+  $("#average").html("<%= j number_to_currency(@expenses.sum(:amount) / @expenses.count) %>");
+
+  var text = "<%= j @expenses.count %> Records found for the filter of <%= j @filter.is_a?(Date) ? Date::MONTHNAMES[@filter.month] : @filter %>!";
+  showSwalAlert("Load Data successfully", text, "success");
 <% else %>
-
-  swal({
-  title: "Something went wrong!",
-  text: "No records for <%= j @filter %> filter!",
-  icon: "warning",
-  button: "ok",
-  });
-
+  var text = "No records for <%= j @filter.is_a?(Date) ? Date::MONTHNAMES[@filter.month] : @filter %> filter!";
+  showSwalAlert("Something went wrong!", text, "warning");
 <% end %>
 

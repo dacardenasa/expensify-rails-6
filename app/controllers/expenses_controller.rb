@@ -1,19 +1,22 @@
 class ExpensesController < ApplicationController
-
   def index
     @tab = :expenses
-    @expenses = Expense.where("date >= :start_date AND date <= :end_date", {
-                              start_date: Date.current.beginning_of_month,
-                              end_date: Date.current.end_of_month
-                              }).order(date: :desc)
-    @types = load_filter_expenses( Expense.all, "type" )
-    @categories = load_filter_expenses( Expense.all, "category")
+    @expenses =
+      Expense.where(
+        'date >= :start_date AND date <= :end_date',
+        {
+          start_date: Date.current.beginning_of_month,
+          end_date: Date.current.end_of_month
+        }
+      ).order(date: :desc)
+    @types = load_filter_expenses(Expense.all, 'type')
+    @categories = load_filter_expenses(Expense.all, 'category')
   end
 
   def new
     @expense = Expense.new
-    @categories = load_filter_expenses( Expense.all, "category")
-    @types = load_filter_expenses( Expense.all, "type")
+    @types = load_filter_expenses(Expense.all, 'type')
+    @categories = load_filter_expenses(Expense.all, 'category')
   end
 
   def create
@@ -22,13 +25,13 @@ class ExpensesController < ApplicationController
 
   def show
     @expense = Expense.find(params[:id])
-    @categories = load_filter_expenses( Expense.all, "category")
-    @types = load_filter_expenses( Expense.all, "type")
+    @types = load_filter_expenses(Expense.all, 'type')
+    @categories = load_filter_expenses(Expense.all, 'category')
   end
 
   def update
-    @expense = Expense.find(params[:id])
     @prev_expense = Expense.find(params[:id])
+    @expense = Expense.find(params[:id])
     @expense.update(params_expense)
   end
 
@@ -38,31 +41,40 @@ class ExpensesController < ApplicationController
   end
 
   def filter
-    @filter = params[:value]
-    if Expense.types.keys.include?(@filter)
+    puts "var => #{params[:value]}"
+
+    if Expense.types.keys.include?(params[:value])
+      @filter = params[:value]
       Expense.types.keys.each_with_index do |key, indice|
-        if key == @filter
-          @type_index = indice
-        end
+        $type_index = indice if key == @filter
       end
-      @expenses = Expense.where("type == :filter", { filter: @type_index }).order(date: :desc)
-    # Here I go, validate month and filter by its, after that make the logic of view for this filter
-    elsif Date::MONTHNAMES.include?(@filter)
-      @month = @filter
-      @expenses = Expense.where("date >= :start_date AND date <= :end_date",
-                                { 
-                                  start_date: Date.parse(@filter).beginning_of_month,
-                                  end_date: Date.parse(@filter).end_of_month
-                                }
-                              ).order(date: :desc)
+
+      @expenses =
+        Expense.where('type == :filter', { filter: $type_index }).order(
+          date: :desc
+        )
+    elsif params[:value].match(/(\d{4}\-\d{1,2}\-\d{1,2})/)
+      @filter = Date.parse(params[:value])
+      @expenses =
+        Expense.where(
+          'date >= :start_date AND date <= :end_date',
+          {
+            start_date: @filter.beginning_of_month,
+            end_date: @filter.end_of_month
+          }
+        ).order(date: :desc)
     else
-      @expenses = Expense.where("category == :filter", { filter: @filter }).order(date: :desc)
+      @filter = params[:value]
+      @expenses =
+        Expense.where('category == :filter', { filter: @filter }).order(
+          date: :desc
+        )
     end
   end
 
   private
+
   def params_expense
     params.require(:expense).permit(:type, :date, :concept, :category, :amount)
   end
-
 end

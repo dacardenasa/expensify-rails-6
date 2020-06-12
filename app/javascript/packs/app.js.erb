@@ -1,0 +1,20 @@
+(function(module, exports) {
+  window.showSwalAlert = ( title, text, state ) => {
+    swal({
+      title: title,
+      text: text,
+      icon: state,
+      button: "ok",
+    });
+  };
+  window.numberToCurrency = ( number ) => {
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+    return formatter.format(number);
+  }
+}.call(this));
+
+
+
