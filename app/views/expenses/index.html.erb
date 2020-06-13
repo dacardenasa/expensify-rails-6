@@ -7,7 +7,7 @@
       <h4 class="filter-header">Transaction Type <span>Choose to filter</span></h4>
       <div class="list-group filter-type">
         <% @types.each do | key, value | %>
-          <%= link_to "#{value}", filter_path(value), remote: true, method: :post, class: "list-group-item", id: value %>
+          <%= link_to "#{value}", filter_path(value), remote: true, class: "list-group-item", id: value %>
         <% end %>
         <!-- MORE TRANSACTION TYPES -->
       </div>
@@ -17,7 +17,7 @@
       <h4 class="filter-header">Categories <span>Choose to filter</span></h4>
       <div class="list-group filter-type">
         <% @categories.each do | key, value | %>
-          <%= link_to "#{value}", filter_path(value), remote: true, method: :post,  class: "list-group-item", id: value %>
+          <%= link_to "#{value}", filter_path(value), remote: true, class: "list-group-item", id: value %>
         <% end %>
         <!-- MORE CATEGORIES  -->
       </div>
@@ -72,7 +72,7 @@
               <% ( (Date.today - 365).beginning_of_month..(Date.today).beginning_of_month ).each do | time | %>
                 <% if time.day == 1 %>
                 <li role="presentation">
-                  <%= link_to "#{ Date::MONTHNAMES[time.month] } #{ time.year }", filter_path(time), remote: true, method: :post, id: Date::MONTHNAMES[time.month] %>
+                  <%= link_to "#{ Date::MONTHNAMES[time.month] } #{ time.year }", filter_path(time), remote: true, id: Date::MONTHNAMES[time.month] %>
                 </li>
                 <% end %>
               <% end %>

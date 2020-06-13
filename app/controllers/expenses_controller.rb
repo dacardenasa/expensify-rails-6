@@ -42,8 +42,7 @@ class ExpensesController < ApplicationController
   end
 
   def filter
-    puts "var => #{params[:value]}"
-
+    
     if Expense.types.keys.include?(params[:value])
       @filter = params[:value]
       Expense.types.keys.each_with_index do |key, indice|
