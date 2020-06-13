@@ -14,7 +14,37 @@
 require 'test_helper'
 
 class ExpenseTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  test "Should not save expense without data" do
+    expense = Expense.new
+    assert_not expense.save
+  end
+
+  test "Should not save expense with letters in amount" do
+    expense = Expense.new(date: "2020-06-10",
+                          concept: "Payment Rafa",
+                          category: "Beauty",
+                          amount: "asd",
+                          type: "Payment")
+    assert_not expense.save
+  end
+
+  test "Should not save expense with min-length < 3 in concept" do
+    expense = Expense.new(date: "2020-06-10",
+                          concept: "a",
+                          category: "Beauty",
+                          amount: 200,
+                          type: "Payment")
+    assert_not expense.save
+  end
+
+  test "Should not save expense with amount = 0" do
+    expense = Expense.new(date: "2020-06-10",
+                          concept: "a",
+                          category: "Beauty",
+                          amount: 0,
+                          type: "Payment")
+    assert_not expense.save
+  end
+
 end

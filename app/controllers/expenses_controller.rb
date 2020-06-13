@@ -1,4 +1,5 @@
 class ExpensesController < ApplicationController
+
   def index
     @tab = :expenses
     @expenses =
@@ -48,12 +49,14 @@ class ExpensesController < ApplicationController
       Expense.types.keys.each_with_index do |key, indice|
         $type_index = indice if key == @filter
       end
-
+      
       @expenses =
         Expense.where('type == :filter', { filter: $type_index }).order(
           date: :desc
         )
+        
     elsif params[:value].match(/(\d{4}\-\d{1,2}\-\d{1,2})/)
+
       @filter = Date.parse(params[:value])
       @expenses =
         Expense.where(
@@ -63,6 +66,7 @@ class ExpensesController < ApplicationController
             end_date: @filter.end_of_month
           }
         ).order(date: :desc)
+
     else
       @filter = params[:value]
       @expenses =
@@ -73,8 +77,8 @@ class ExpensesController < ApplicationController
   end
 
   private
-
   def params_expense
     params.require(:expense).permit(:type, :date, :concept, :category, :amount)
   end
+
 end

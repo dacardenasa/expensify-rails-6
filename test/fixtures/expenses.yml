@@ -13,15 +13,25 @@
 #
 
 one:
-  type: 
+  id: 1,
+  type: "Payment"
   date: 2020-06-05
   concept: MyText
   category: MyString
   amount: 1
 
 two:
-  type: 
+  id: 2,
+  type: "Withdrawal"
   date: 2020-06-05
   concept: MyText
   category: MyString
   amount: 1
+
+Purchase:
+  id: 3,
+  type: Purchase
+  date: 2020-06-05
+  concept: Payment uncle Rhianna
+  category: Beauty
+  amount: 200
