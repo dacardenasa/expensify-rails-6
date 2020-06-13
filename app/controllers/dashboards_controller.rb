@@ -35,7 +35,7 @@ class DashboardsController < ApplicationController
     categories.each do |key, category|
       item =
         @expenses.where(
-          'category == :category AND date >= :start_date AND date <= :end_date',
+          'category = :category AND date >= :start_date AND date <= :end_date',
           {
             category: category,
             start_date: Date.current.beginning_of_month,
@@ -51,7 +51,7 @@ class DashboardsController < ApplicationController
         [
           category.capitalize,
           @expenses.where(
-            'category == :category AND date >= :start_date AND date <= :end_date',
+            'category = :category AND date >= :start_date AND date <= :end_date',
             {
               category: category,
               start_date: Date.current.beginning_of_month,
