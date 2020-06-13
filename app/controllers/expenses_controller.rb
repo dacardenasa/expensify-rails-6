@@ -42,7 +42,7 @@ class ExpensesController < ApplicationController
   end
 
   def filter
-    
+
     if Expense.types.keys.include?(params[:value])
       @filter = params[:value]
       Expense.types.keys.each_with_index do |key, indice|
@@ -50,7 +50,7 @@ class ExpensesController < ApplicationController
       end
       
       @expenses =
-        Expense.where('type == :filter', { filter: $type_index }).order(
+        Expense.where('type = :filter', { filter: $type_index }).order(
           date: :desc
         )
         
@@ -69,7 +69,7 @@ class ExpensesController < ApplicationController
     else
       @filter = params[:value]
       @expenses =
-        Expense.where('category == :filter', { filter: @filter }).order(
+        Expense.where('category = :filter', { filter: @filter }).order(
           date: :desc
         )
     end
