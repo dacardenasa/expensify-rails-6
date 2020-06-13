@@ -8,7 +8,7 @@ class DashboardsController < ApplicationController
       Expense.types.keys.map do |type|
         {
           name: type.capitalize,
-          data: @expenses.where(type: type).group_by_month(:date, last: 6).sum(:amount)
+          data: @expenses.where(type: type).group_by_month(:date, last: 6).unscope(:order).sum(:amount)
         }
       end
 
@@ -22,7 +22,7 @@ class DashboardsController < ApplicationController
               :date,
               range: Date.current.beginning_of_month..Date.current.end_of_month,
               series: false
-            ).sum(:amount)
+            ).unscope(:order).sum(:amount)
         }
       end
 
