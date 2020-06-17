@@ -102,11 +102,9 @@
         <div class="panel-heading">Accumulated</div>
         <div class="panel-body">
           <div id="month-acc" style="height: 300px;">
-            <%= bar_chart @acumulated_data, 
-                          prefix: "$" , 
-                          thousands: ",",
-                          colors: ["#f7dc6f"] 
-                          %>
+            <%= line_chart @acumulated_data,
+                            prefix: "$", 
+                            thousands: "," %>
           </div>
         </div>
       </div>
