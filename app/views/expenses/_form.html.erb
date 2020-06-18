@@ -46,6 +46,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-    <%= f.submit form_title, class: "btn btn-info" %>
+    <%= f.submit form_title, class: "btn btn-info", data: { disable_with: "Saving expense..." }  %>
   </div>
 <% end %>

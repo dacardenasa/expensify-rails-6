@@ -42,21 +42,18 @@ class ExpensesController < ApplicationController
   end
 
   def filter
+    $date_format = /(\d{4}\-\d{1,2}\-\d{1,2})/
 
     if Expense.types.keys.include?(params[:value])
       @filter = params[:value]
-      Expense.types.keys.each_with_index do |key, indice|
-        $type_index = indice if key == @filter
-      end
-      
       @expenses =
-        Expense.where('type = :filter', { filter: $type_index }).order(
+        Expense.where('type = :filter', { filter: Expense.types[@filter] }).order(
           date: :desc
         )
         
-    elsif params[:value].match(/(\d{4}\-\d{1,2}\-\d{1,2})/)
-
+    elsif params[:value].match($date_format)
       @filter = Date.parse(params[:value])
+      
       @expenses =
         Expense.where(
           'date >= :start_date AND date <= :end_date',

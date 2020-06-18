@@ -64,13 +64,13 @@ class DashboardsController < ApplicationController
     # Chartkick line chart, data order by previous month and current month expenses - Multiple series
 
     @acumulated_data =
-    [Date.current.prev_month, Date.current].map do |date|
+    [Date.today.prev_month, Date.today].map do |date|
         {
           name: Date::ABBR_MONTHNAMES[date.month],
           data: @expenses.group_by_week(:date, range: date.beginning_of_month...date.end_of_month).unscope(:order).sum(:amount) 
         }
       end
-
+    
     # Array to load random colors for pie chart categories
     @colors = Array.new
     # Populate array
