@@ -7,10 +7,6 @@ class ExpenseFlowTest < ActionDispatch::IntegrationTest
     visit expenses_path
     click_on('Payment')
     click_on('ok')
-    click_on('Purchase')
-    click_on('ok')
-    click_on('Withdrawal')
-    click_on('ok')
     click_on('Beauty')
     click_on('ok')
   end

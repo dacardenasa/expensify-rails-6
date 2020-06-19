@@ -4,16 +4,17 @@ require 'rails/test_help'
 require "minitest/reporters"
 require 'capybara/rails'
 require 'capybara/minitest'
+require "selenium/webdriver"
+
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
+Capybara.register_driver :headless_chrome do |app|
+  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu disable-dev-shm-usage])
 
-# Capybara.register_driver :chrome do |app|
-# 	options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu])
-# 
-# 	Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
-# end
-# 
-# Capybara.javascript_driver = :chrome
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+Capybara.javascript_driver = :headless_chrome # or optional :chrome for getting a browser locally
 
 class ActionDispatch::IntegrationTest
   # Make the Capybara DSL available in all integration tests
