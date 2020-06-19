@@ -3,6 +3,8 @@
 
   // Update info expense into table
   var filter = false;
+  var monthDom = $("button#active").attr("name");
+  var monthExpense = "<%= j Date::MONTHNAMES[@expense.date.month] %>"
 
   $( ".filter-type a" ).each(function( index ) {
     if ( $( this ).hasClass("active") ) {
@@ -11,7 +13,7 @@
     }
   });
 
-  if (!filter) {
+  if ( !filter || monthDom === monthExpense ) {
     $('table tbody').prepend(' <%= j render "row", expense: @expense %>');
 
     var expenseAmount = <%= j @expense.amount %>

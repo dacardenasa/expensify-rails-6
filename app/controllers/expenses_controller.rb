@@ -42,34 +42,36 @@ class ExpensesController < ApplicationController
   end
 
   def filter
-    $date_format = /(\d{4}\-\d{1,2}\-\d{1,2})/
+    @expenses = Expense.all
 
-    if Expense.types.keys.include?(params[:value])
-      @filter = params[:value]
+    if params[:type].present?
+      @filter = params[:type]
       @expenses =
-        Expense.where('type = :filter', { filter: Expense.types[@filter] }).order(
+        @expenses.where('type = :filter', { filter: Expense.types[@filter] }).order(
           date: :desc
         )
-        
-    elsif params[:value].match($date_format)
-      @filter = Date.parse(params[:value])
-      
+    end
+
+    if params[:category].present?
+      @filter = params[:category]
       @expenses =
-        Expense.where(
+        @expenses.where('category = :filter', { filter: @filter }).order(
+          date: :desc
+        )
+    end
+
+    if params[:date].present?
+      @filter = Date.parse(params[:date])
+      @expenses =
+        @expenses.where(
           'date >= :start_date AND date <= :end_date',
           {
             start_date: @filter.beginning_of_month,
             end_date: @filter.end_of_month
           }
         ).order(date: :desc)
-
-    else
-      @filter = params[:value]
-      @expenses =
-        Expense.where('category = :filter', { filter: @filter }).order(
-          date: :desc
-        )
     end
+
   end
 
   private

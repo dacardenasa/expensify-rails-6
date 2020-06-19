@@ -1,0 +1,137 @@
+$(document).ready(function(){
+  var types = [ "Payment", "Purchase", "Transfer", "Withdrawal" ];
+  var categories = [];
+
+  $(".filter-categories a").each(function(index) {
+    if( !categories.includes( $(this).attr('id') ) ){
+      categories.push( $(this).attr('id') );
+    }
+  });
+
+  // Types proc
+  <% types_active_proc = Proc.new { %>
+    var href = $(this).attr("href");
+    var newHref = href.replace(`&type=${type}`, ``);
+    $(this).attr("href", newHref);
+  <% } %>
+
+  <% types_no_active_proc = Proc.new { %>
+    var href = $(this).attr("href");
+    // Format url avoid multiple parameters type
+    $.each(types, function(index, value){
+      if (href.includes(value)){
+        href = href.replace(`&type=${value}`, ``);
+      }
+    });
+    var newHref = href + "&type=" + type;
+    $(this).attr("href", newHref);
+  <% } %>
+
+  // Categories proc
+  <% categories_active_proc = Proc.new { %>
+    var href = $(this).attr("href");
+    var newHref = href.replace(`&category=${category}`, ``);
+    $(this).attr("href", newHref);
+  <% } %>
+
+  <% categories_no_active_proc = Proc.new { %>
+    var href = $(this).attr("href");
+    // Format url to avoid various category parameters
+    $.each(categories, function(index, value){
+      if (href.includes(value)){
+        href = href.replace(`&category=${value}`, ``);
+      }
+    });
+    var newHref = href + "&category=" + category;
+    $(this).attr("href", newHref);
+  <% } %>
+
+  // Dropdown months menu
+  $("#menu li a").on("click", function(e) {
+    var newDate = $(this).attr('name');
+    
+    $("button#active").attr("name", $(this).html());
+    $("button#active").html("" + $(this).html() + " <span class='caret'></span>");
+
+    // Add date parameter to each url of the menu types
+    $(".filter-type a").each(function(index) {
+      var href = $(this).attr("href");
+      var newHref = href.replace(/(date=).*?(&)/,'$1' + newDate + '$2');
+      $(this).attr("href", newHref);
+    });
+
+    // Add date parameter to each url of the menu categories
+    $(".filter-categories a").each(function(index) {
+      var href = $(this).attr("href");
+      var newHref = href.replace(/(date=).*/,'$1' + newDate);
+      $(this).attr("href", newHref);
+    });
+
+  });
+
+  // Filter type menu
+  $(".filter-type a").on("click", function(e) {
+    var type = $(this).attr("id");
+
+    if ($(this).hasClass("active")) {
+      // Remove parameter type a urls menu categories
+      $(".filter-categories a").each(function(index) {
+        <%= j types_active_proc.call %>
+      });
+
+      // Remove parameter type a urls from menu dates
+      $("#menu li a").each(function(index) {
+        <%= j types_active_proc.call %>
+      });
+
+      $(this).removeClass("active");
+    } else {
+      // Add parameter type to urls of menu categories
+      $(".filter-categories a").each(function(index) {
+        <%= j types_no_active_proc.call %>
+      });
+
+      // Add parameter type to urls of menu dates
+      $("#menu li a").each(function(index) {
+        <%= j types_no_active_proc.call %>
+      });
+
+      $(".filter-type a").removeClass("active");
+      $(this).addClass("active");
+    }
+  });
+
+  // Filter category menu
+  $(".filter-categories a").on("click", function(e) {
+    var category = $(this).attr("id");
+
+    if ($(this).hasClass("active")) {
+      // Remove parameter category urls from menu types
+      $(".filter-type a").each(function(index) {
+        <%= j categories_active_proc.call %>
+      });
+
+      // Remove parameter category urls from menu dates
+      $("#menu li a").each(function(index) {
+        <%= j categories_active_proc.call %>
+      });
+
+      $(this).removeClass("active");
+    } else {
+
+      // Add category parameter to urls of menu types
+      $(".filter-type a").each(function(index) {
+        <%= j categories_no_active_proc.call %>
+      });
+
+      // Add category parameter to urls of menu dates
+      $("#menu li a").each(function(index) {
+        <%= j categories_no_active_proc.call %>
+      });
+
+      $(".filter-categories a").removeClass("active");
+      $(this).addClass("active");
+    }
+  });
+
+});

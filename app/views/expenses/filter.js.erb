@@ -1,28 +1,19 @@
 <% if @expenses.count > 0 %>
 
-  $(".filter-type").children().removeClass("active");
   $("table tbody").children().remove();
 
   <% @expenses.each do |expense| %>
     $('table tbody').append(' <%= j render "row", expense: expense %>');
   <% end %>
     
-  <% if Expense.types.keys.include?(@filter) %>
-    $(".filter-type #<%= j @filter%>").addClass("active");
-  <% elsif @filter.is_a?(Date) %>
-    $(".dropdown button#active").html("<%= j Date::MONTHNAMES[@filter.month] %>" + " <%= j @filter.year %> <span class='caret'></span>");
-  <% else %>
-    $(".filter-type #<%= j @filter %>").addClass("active");
-  <% end %>
-
   $("#total").html("<%= j number_to_currency(@expenses.sum(:amount)) %>");
   $("#transactions").html("<%= j @expenses.count %>");
   $("#average").html("<%= j number_to_currency(@expenses.sum(:amount) / @expenses.count) %>");
 
-  var text = "<%= j @expenses.count %> Records found for the filter of <%= j @filter.is_a?(Date) ? Date::MONTHNAMES[@filter.month] : @filter %>!";
+  var text = "<%= j @expenses.count %> Records found for this filter!";
   showSwalAlert("Load Data successfully", text, "success");
 <% else %>
-  var text = "No records for <%= j @filter.is_a?(Date) ? Date::MONTHNAMES[@filter.month] : @filter %> filter!";
+  var text = "No records for this filter!";
   showSwalAlert("Something went wrong!", text, "warning");
 <% end %>
 
