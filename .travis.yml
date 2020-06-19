@@ -2,8 +2,4 @@ language: ruby
 cache:
 - bundler
 addons:
-  apt:
-    - google-chrome-stable
-    - chromium-chromedriver
-before_script:
-  - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
+  chrome: stable
