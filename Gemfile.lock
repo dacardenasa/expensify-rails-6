@@ -98,7 +98,7 @@ GEM
     capybara-selenium (0.0.6)
       capybara
       selenium-webdriver
-    chartkick (3.3.1)
+    chartkick (3.4.0)
     childprocess (3.0.0)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
@@ -252,7 +252,7 @@ DEPENDENCIES
   byebug
   capybara (~> 3.32, >= 3.32.2)
   capybara-selenium
-  chartkick (~> 3.3, >= 3.3.1)
+  chartkick (~> 3.4)
   faker!
   groupdate (~> 5.0)
   jbuilder (~> 2.7)
