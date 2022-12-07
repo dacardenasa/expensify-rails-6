@@ -26,6 +26,8 @@ gem 'chartkick', '~> 3.3', '>= 3.3.1'
 gem 'groupdate', '~> 5.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
+# Mimemagic
+gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
 
 group :development, :test do
   gem 'annotate'
@@ -60,5 +62,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :production do
   gem 'rails_12factor'
-  gem 'pg', '~> 0.18.4'
+  gem 'pg', '~> 1.4.5'
 end
